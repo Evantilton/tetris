@@ -3,12 +3,7 @@ const context = canvas.getContext('2d');
 
 context.scale(20, 20);
 
-//making the 2d matrix for the T piece
-const matrix = [
-    [0, 0, 0],
-    [1, 1, 1],
-    [0, 1, 0],
-]
+
 
 function collide(arena, player) {
     const [m,o] = [player.matrix, player.pos];
@@ -32,6 +27,15 @@ function createMatrix (w, h) {
     return matrix;
 }
 
+function createPiece(type) {
+    if (type === 'T') {
+        return [
+            [0, 0, 0],
+            [1, 1, 1],
+            [0, 1, 0],
+        ];
+    }
+}
 function draw() {
     //this draws the board, 000 is code for black
     context.fillStyle = '#000';
@@ -140,7 +144,7 @@ const arena = createMatrix(12, 20);
 //sets the position of the piece the player controls 
 const player = {
     pos: {x: 5,y: 5},
-    matrix: matrix,
+    matrix: createPiece('T'),
 }
 
 document.addEventListener('keydown', event => {
