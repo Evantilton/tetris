@@ -10,6 +10,18 @@ const matrix = [
     [0, 1, 0],
 ]
 
+// function collide(arena, player) {
+//     const [m,o]
+// }
+
+function createMatrix (w, h) {
+    const matrix = [];
+    while (h--) {
+        matrix.push(new Array(w).fill(0))
+    }
+    return matrix;
+}
+
 function draw() {
     //this draws the board, 000 is code for black
     context.fillStyle = '#000';
@@ -32,30 +44,44 @@ function drawMatrix(matrix, offset) {
         });
     });
 }
-// let dropCounter = 0;
-// //this is milliseconds, so every 1 second
-// //it drops the piece every 1 second
-// let dropInterval = 1000;
-// let lastTime = 0;
+let dropCounter = 0;
+//this is milliseconds, so every 1 second
+//it drops the piece every 1 second
+let dropInterval = 1000;
+let lastTime = 0;
 //this keeps it continually updating on every move
 function update(time = 0) {
-    // const deltaTime = time - lastTime;
-    // lastTime = time;
+    const deltaTime = time - lastTime;
+    lastTime = time;
 
-    // dropCounter += deltaTime;
-    // if (dropCounter > dropInterval) {
-    //     player.pos.y++;
-    //     dropCounter = 0;
-    // }
-    // console.log(deltaTime);
+    dropCounter += deltaTime;
+    if (dropCounter > dropInterval) {
+        player.pos.y++;
+        dropCounter = 0;
+    }
     draw();
     requestAnimationFrame(update);
 }
-
-//sets the position of the piece the player controls
+const arena = createMatrix(12, 20);
+console.log(arena);
+console.table(arena);
+//sets the position of the piece the player controls 
 const player = {
     pos: {x: 5,y: 5},
     matrix: matrix,
 }
 
+document.addEventListener('keydown', event => {
+    console.log(event);
+    if (event.keyCode === 37) {
+        player.pos.x--;
+    } else if (event.keyCode === 39) {
+        player.pos.x++;
+    } else if (event.keyCode === 40 ) {
+        player.pos.y++;
+        //this is so it doesn't drop twice immediately, this adds
+        //a second delay before the next auto drop
+        dropCounter = 0;
+    }
+});
 update();
